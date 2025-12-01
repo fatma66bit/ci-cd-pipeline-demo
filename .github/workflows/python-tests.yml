@@ -5,7 +5,7 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  workflow_dispatch:  # Pour lancer manuellement
+  workflow_dispatch:
 
 jobs:
   test:
@@ -16,13 +16,20 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Setup Python
+    - name: Setup Python with cache
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
+        cache: 'pip'  # ⭐ AJOUTEZ CE CI!
         
     - name: Install pytest
       run: pip install pytest
       
     - name: Run tests
       run: python -m pytest tests/ -v
+      
+    # ⭐ AJOUTEZ UNE ÉTAPE POUR AFFICHER LES STATS
+    - name: Display timing
+      run: |
+        echo "✅ Pipeline completed successfully!"
+        echo "📊 Next run will be faster with cache"
